@@ -16,7 +16,6 @@ public class CategoryEntity {
 
     private String name;
 
-    // --- Getter / Setter ---
     public Integer getId() {
         return id;
     }
