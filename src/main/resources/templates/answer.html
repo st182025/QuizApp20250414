@@ -33,8 +33,6 @@
 	<!-- 解説を表示（仮：今後 DB に解説カラムがあればそちらを表示） -->
 	<p><strong>解説：</strong> <span th:text="${question.explanation}">ここに解説</span></p>
 
-
-
 	<!-- 次の問題へのリンク -->
 	<form action="/quiz/next" method="get">
 		<input type="hidden" name="index" th:value="${index + 1}" />

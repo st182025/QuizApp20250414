@@ -35,10 +35,17 @@ body {
 .home {
     display: flex;
     flex-direction: column;
-    align-items: center;     /* 中央寄せ（水平方向） */
-    justify-content: center; /* 中央寄せ（垂直方向・必要なら） */
+    align-items: center;
+    /* justify-content: center; */
     text-align: center;
-    min-height: 100vh;       /* 画面中央に置くために高さを全体に */
+    min-height: 100vh;
+}
+.title {
+    font-size: 3rem;
+    margin-top: 50px;
+    text-align: center;
+    font-weight: bold;
+    color:#ff8000;
 }
 .category-container {
     display: flex;
@@ -100,6 +107,7 @@ body {
 .answer{
 	text-align: center;
     padding: 30px;
+    font-size: 1.2em;
 }
 
 @media screen and (max-width: 600px) {
