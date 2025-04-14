@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>クイズ</title>
+</head>
+
+<body class="quiz">
+	<div class="header-container">
+	    <h1 class="header">Quiz App</h1>
+	    <a href="/home" class="home-link">トップへ戻る</a>
+	</div>
+
+	<div class="question-area">
+		<h2 th:text="'第' + ${questionNumber} + '問'">第1問</h2>
+		<p><strong th:text="${question.questionText}">問題文が入ります</strong></p>
+	</div>
+
+	<form action="/quiz/answer" method="post">
+
+
+		<div class="option-container">
+			<button type="submit" name="selectedOption" value="option_1"
+				class="option-btn">[[${question.option_1}]]</button>
+			<button type="submit" name="selectedOption" value="option_2"
+				class="option-btn">[[${question.option_2}]]</button>
+			<button type="submit" name="selectedOption" value="option_3"
+				class="option-btn">[[${question.option_3}]]</button>
+			<button type="submit" name="selectedOption" value="option_4"
+				class="option-btn">[[${question.option_4}]]</button>
+		</div>
+
+		<!-- クイズ進行情報を隠しで送る -->
+		<input type="hidden" name="id" th:value="${question.id}" />
+		<input type="hidden" name="category" th:value="${category}" />
+		<input type="hidden" name="mode" th:value="${mode}" />
+		<input type="hidden" name="index" th:value="${questionNumber - 1}" />
+	</form>
+	
+</body>
+
+</html>

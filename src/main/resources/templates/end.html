@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>クイズ終了</title>
+</head>
+<body class="end">
+	<h1 class="header">Quiz App</h1>
+    <h2>クイズ終了！おつかれさまでした。</h2>
+	<p>あなたの正解数は <span th:text="${correctCount}">0</span> / <span th:text="${totalCount}">0</span> です。</p>
+    <a href="/home">ホームに戻る</a>
+</body>
+</html>

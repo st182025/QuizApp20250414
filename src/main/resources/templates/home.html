@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>クイズアプリ</title>
+</head>
+
+<body class="home">
+	<h1 class="header">Quiz App</h1>
+	<h2>クイズアプリへようこそ！</h2>
+
+	<form id="categoryForm" action="/quiz/start" method="get">
+		<!-- 出題順（ラジオボタン） -->
+		<p><strong>出題順：</strong></p>
+		<label><input type="radio" name="mode" value="normal" checked> ID順</label>
+		<label><input type="radio" name="mode" value="shuffle"> シャッフル</label>
+
+		<!-- カテゴリ選択 -->
+		<p><strong>カテゴリを選んでください：</strong></p>
+		<input type="hidden" name="category" id="categoryInput">
+		<div class="category-container">
+		    <button type="submit" onclick="setCategory('all')" class="category-btn">オールジャンル</button>
+		    <button type="submit" onclick="setCategory('math')" class="category-btn">算数</button>
+		    <button type="submit" onclick="setCategory('history')" class="category-btn">歴史</button>
+		    <button type="submit" onclick="setCategory('trivia')" class="category-btn">雑学</button>
+		</div>
+	</form>
+
+	<script>
+		function setCategory(category) {
+			document.getElementById('categoryInput').value = category;
+		}
+	</script>
+</body>
+
+</html>
