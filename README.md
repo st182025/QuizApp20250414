@@ -149,6 +149,13 @@ mvn spring-boot:run
 
 http://localhost:8081/home
 
+・問題表示ページ
+![クイズアプリの問題表示ページ](./QuizAppSS02.png)
+
+
+・答え表示ページ
+![クイズアプリの答え表示ページ](./QuizAppSS03.png)
+
 ---
 今後の拡張予定
 ・ログイン機能（ユーザー／管理者）
