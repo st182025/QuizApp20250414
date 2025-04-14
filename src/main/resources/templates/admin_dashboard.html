@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>管理者ページ</title>
+	<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+</head>
+
+<body class="admin">
+	<div class="header-container">
+		<h1 class="header">管理者ダッシュボード</h1>
+		<a href="/admin/logout" class="home-link">ログアウト</a>
+	</div>
+
+	<div class="dashboard-content">
+		<h2 th:text="'　ようこそ、' + ${adminUser.username} + ' さん！'">ようこそ、admin さん！</h2>
+
+	</div>
+	<div style="text-align: center; margin: 20px 0;">
+		<a href="/admin/new" class="btn-gold">新規問題作成</a>
+	</div>
+<br>
+	<!-- クイズ一覧 -->
+	<table border="1" class="quiz-table" style="margin: auto; text-align: center;">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>カテゴリ</th>
+				<th>問題</th>
+				<th>正解</th>
+				<th>編集</th>
+				<th>削除</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="quiz : ${quizList}">
+				<td th:text="${quiz.id}"></td>
+				<td th:text="${quiz.category.name}"></td>
+				<td th:text="${quiz.questionText}"></td>
+				<td th:switch="${quiz.correctAnswer}">
+					<span th:case="'option_1'" th:text="${quiz.option_1}"></span>
+					<span th:case="'option_2'" th:text="${quiz.option_2}"></span>
+					<span th:case="'option_3'" th:text="${quiz.option_3}"></span>
+					<span th:case="'option_4'" th:text="${quiz.option_4}"></span>
+				</td>
+				<td><a th:href="@{'/admin/edit/' + ${quiz.id}}" class="btn-green">編集</a></td>
+				<td><a th:href="@{'/admin/delete/' + ${quiz.id}}" class="btn-red">削除</a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+
+</html>

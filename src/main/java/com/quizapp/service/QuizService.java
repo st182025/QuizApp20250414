@@ -65,4 +65,10 @@ public class QuizService {
     public QuizEntity getFirstQuestionByCategoryId(Integer categoryId) {
         return quizRepository.findFirstByCategory_IdOrderByIdAsc(categoryId);
     }
+    /**
+     * クイズを全件取得（カテゴリ付き）
+     */
+    public List<QuizEntity> getAllQuestionsWithCategory() {
+        return quizRepository.findAll(); // Category は QuizEntity 内で外部参照されている
+    }
 }
