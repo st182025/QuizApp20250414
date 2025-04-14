@@ -20,6 +20,7 @@
 	<!-- 問題文を再表示 -->
 	<p>Q.　<strong th:text="${question.questionText}">問題文</strong></p>
 
+	
 	<!-- 正解の選択肢を明示的に表示 -->
 	<p><strong>正解：</strong>
 		<span th:switch="${question.correctAnswer}">
