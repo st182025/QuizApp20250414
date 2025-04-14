@@ -91,7 +91,7 @@ CREATE TABLE quiz_questions (
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-4-5. 初期データを追加
+4-5. 初期データを追加　(例題)
 
 INSERT INTO categories (name) VALUES ('math'), ('history'), ('trivia');
 
