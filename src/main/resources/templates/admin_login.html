@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理者ログイン</title>
+</head>
+<body>
+    <h1>管理者ログイン</h1>
+
+	<form action="/admin/login" method="post">
+	    <label for="username">ユーザー名：</label>
+	    <input type="text" id="username" name="username" required 
+	           pattern="[a-zA-Z0-9]+" 
+	           title="半角英数字のみで入力してください">
+
+	    <br>
+
+	    <label for="password">パスワード：</label>
+	    <input type="password" id="password" name="password" required 
+	           pattern="[a-zA-Z0-9]{4,}" 
+	           title="半角英数字で4文字以上入力してください">
+
+	    <br><br>
+
+	    <button type="submit">ログイン</button>
+	</form>
+
+    <p th:if="${loginError}" style="color: red;">ユーザー名またはパスワードが正しくありません</p>
+</body>
+</html>
