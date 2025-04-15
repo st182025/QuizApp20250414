@@ -10,7 +10,12 @@
 <body class="quiz">
 	<div class="header-container">
 	    <h1 class="header">Quiz App</h1>
-	    <a href="/home" class="home-link">トップへ戻る</a>
+		<div class="header-links">
+		      <a th:if="${session.user != null}" href="/user/mypage" class="btn-blue" style="margin-right: 10px;">マイページ</a>
+		      <a th:if="${session.user != null}" href="/logout" class="btn-red" style="margin-right: 10px;">ログアウト</a>
+		      <a href="/home" class="home-link">トップへ戻る</a>
+		  </div>
+	   
 	</div>
 
 	<div class="question-area">

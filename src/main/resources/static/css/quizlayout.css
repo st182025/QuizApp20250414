@@ -22,17 +22,21 @@ body {
 }
 
 .home-link {
-	font-size: 0.9em;
-	text-decoration: none;
-	color: #fff;
-	background-color: #555;
-	padding: 8px 14px;
+	background: linear-gradient(to bottom, #444444, #000000);  /* 明るい青 → 水色系 */
+	color: white;
+	padding: 10px 16px;
+	border: none;
 	border-radius: 8px;
-	transition: background-color 0.3s ease;
+	text-decoration: none;
+	font-size: 1em;
+	cursor: pointer;
+	display: inline-block;
+	transition: transform 0.2s ease, opacity 0.3s ease;
 }
 
 .home-link:hover {
-	background-color: #777;
+	transform: scale(1.1);
+	opacity: 0.9;
 }
 
 .home {
@@ -107,15 +111,16 @@ body {
 	background-color: #eee;
 }
 
-.answer {
+
+
+.answer .main-content {
 	text-align: center;
 	padding: 30px;
 	font-size: 1.2em;
 }
-
 /* 管理者ログインボタンのコンテナ */
 .adminlogin-container {
-	margin-top: 80px;
+	margin-top: 68px;
 	text-align: center;
 }
 
@@ -243,9 +248,14 @@ body {
 	background-color: #fff;
 	font-weight: bold;
 }
+/*正解欄黒塗り*/
+.answer-cell {
+	background: #000;
+	
+}
 
 .btn-green {
-	background: linear-gradient(to bottom, #66bb6a, #388e3c); /* 明るい緑→深緑 */
+	background: linear-gradient(to bottom, #66bb6a, #388e3c); 
 	color: white;
 	padding: 10px 16px;
 	border: none;
@@ -263,7 +273,7 @@ body {
 }
 
 .btn-red {
-	background: linear-gradient(to bottom, #ef5350, #c62828); /* 明るい赤→深紅 */
+	background: linear-gradient(to bottom, #ef5350, #c62828); 
 	color: white;
 	padding: 10px 16px;
 	border: none;
@@ -281,7 +291,7 @@ body {
 }
 
 .btn-white {
-	background: linear-gradient(to bottom, #fff, #dad); /* 明るい赤→深紅 */
+	background: linear-gradient(to bottom, #fff, #dad); 
 	color: black;
 	padding: 10px 16px;
 	border: none;
@@ -294,6 +304,41 @@ body {
 }
 
 .btn-white:hover {
+	transform: scale(1.1);
+	opacity: 0.9;
+}
+
+.btn-blue {
+	background: linear-gradient(to bottom,  #4facfe, #00f2fe); 
+	color: black;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 8px;
+	text-decoration: none;
+	font-size: 1em;
+	cursor: pointer;
+	display: inline-block;
+	transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.btn-blue:hover {
+	transform: scale(1.1);
+	opacity: 0.9;
+}
+.btn-yellow {
+	background: linear-gradient(to bottom, #fff176, #fbc02d); /* 明るい黄色→濃い黄色 */
+	color: black;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 8px;
+	text-decoration: none;
+	font-size: 1em;
+	cursor: pointer;
+	display: inline-block;
+	transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.btn-yellow:hover {
 	transform: scale(1.1);
 	opacity: 0.9;
 }

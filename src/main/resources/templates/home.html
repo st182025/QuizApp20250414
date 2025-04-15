@@ -10,23 +10,40 @@
 <body class="home">
 	<h1 class="title">Quiz App</h1>
 	<br>
-	<h2>クイズアプリへようこそ！</h2>
 
+	<!--  ログインユーザー用表示 -->
+	<div th:if="${session.user != null}">
+		<h2 th:text="${session.user.username} + ' さん'"></h2>
+		<p>クイズアプリへようこそ！</p>
+		<div style="margin: 10px 0;">
+			<a href="/user/mypage" class="btn-blue" style="margin-right: 10px;">マイページへ</a>
+			<a href="/logout" class="btn-red">ログアウト</a>
+		</div>
+	</div>
+
+	<!--  未ログインユーザー用表示 -->
+	<div th:if="${session.user == null}">
+		<h2>クイズアプリへようこそ！</h2>
+		<div class="adminlogin-container">
+			<form action="/login" method="get">
+				<button type="submit" class="adminlogin-btn">ログイン</button>
+			</form>
+		</div>
+	</div>
+
+	<!--  クイズ開始フォームは共通で表示 -->
 	<form id="categoryForm" action="/quiz/start" method="get">
-		<!-- 出題順（ラジオボタン） -->
 		<p><strong>出題順：</strong></p>
 		<label><input type="radio" name="mode" value="normal" checked> ID順</label>
 		<label><input type="radio" name="mode" value="shuffle"> シャッフル</label>
 
-		
-		<!-- カテゴリ選択 -->
 		<p><strong>カテゴリを選んでください：</strong></p>
 		<input type="hidden" name="category" id="categoryInput">
 		<div class="category-container">
-		    <button type="submit" onclick="setCategory('all')" class="category-btn">オールジャンル</button>
-		    <button type="submit" onclick="setCategory('math')" class="category-btn">算数</button>
-		    <button type="submit" onclick="setCategory('history')" class="category-btn">歴史</button>
-		    <button type="submit" onclick="setCategory('trivia')" class="category-btn">雑学</button>
+			<button type="submit" onclick="setCategory('all')" class="category-btn">オールジャンル</button>
+			<button type="submit" onclick="setCategory('math')" class="category-btn">算数</button>
+			<button type="submit" onclick="setCategory('history')" class="category-btn">歴史</button>
+			<button type="submit" onclick="setCategory('trivia')" class="category-btn">雑学</button>
 		</div>
 	</form>
 
@@ -35,12 +52,6 @@
 			document.getElementById('categoryInput').value = category;
 		}
 	</script>
-	<div class="adminlogin-container">
-	    <form action="/admin/login" method="get">
-	        <button type="submit" class="adminlogin-btn">管理者ログイン</button>
-	    </form>
-	</div>
-
 	
 </body>
 

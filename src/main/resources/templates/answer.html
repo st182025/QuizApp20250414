@@ -8,39 +8,65 @@
 </head>
 
 <body class="answer">
+
 	<div class="header-container">
-		<h1 class="header">Quiz App</h1>
-		<a href="/home" class="home-link">トップへ戻る</a>
+	    <h1 class="header">Quiz App</h1>
+		<div class="header-links">
+		      <a th:if="${session.user != null}" href="/user/mypage" class="btn-blue" style="margin-right: 10px;">マイページ</a>
+		      <a th:if="${session.user != null}" href="/logout" class="btn-red" style="margin-right: 10px;">ログアウト</a>
+		      <a href="/home" class="home-link">トップへ戻る</a>
+		  </div>
 	</div>
 
-	<!-- 正解 or 不正解のメッセージ表示 -->
-	<h2 th:if="${isCorrect}" style="color: green;">正解！</h2>
-	<h2 th:if="${!isCorrect}" style="color: red;">不正解...</h2>
+	<!-- ✅ ここから本文中央寄せエリア -->
+	<div class="main-content">
+		<!-- 正解 or 不正解のメッセージ表示 -->
+		<h2 th:if="${isCorrect}" style="color: green;">正解！</h2>
+		<h2 th:if="${isCorrect != null and !isCorrect}" style="color: red;">不正解...</h2>
 
-	<!-- 問題文を再表示 -->
-	<p>Q.　<strong th:text="${question.questionText}">問題文</strong></p>
+		<!-- お気に入り登録完了メッセージ-->
+		<div th:if="${successMessage}" style="color: green; margin-top: 20px;">
+			[[${successMessage}]]
+		</div>
 
-	
-	<!-- 正解の選択肢を明示的に表示 -->
-	<p><strong>正解：</strong>
-		<span th:switch="${question.correctAnswer}">
-			<span th:case="'option_1'" th:text="${question.option_1}" />
-			<span th:case="'option_2'" th:text="${question.option_2}" />
-			<span th:case="'option_3'" th:text="${question.option_3}" />
-			<span th:case="'option_4'" th:text="${question.option_4}" />
-		</span>
-	</p>
-	<!-- 解説を表示（仮：今後 DB に解説カラムがあればそちらを表示） -->
-	<p><strong>解説：</strong> <span th:text="${question.explanation}">ここに解説</span></p>
+		<!-- 問題文を再表示 -->
+		<p>Q.　<strong th:text="${question.questionText}">問題文</strong></p>
 
-	<!-- 次の問題へのリンク -->
-	<form action="/quiz/next" method="get">
-		<input type="hidden" name="index" th:value="${index + 1}" />
-		<input type="hidden" name="category" th:value="${category}" />
-		<input type="hidden" name="mode" th:value="${mode}" />
-		<button type="submit">次の問題へ</button>
-	</form>
+		<!-- 正解の選択肢を明示的に表示 -->
+		<p><strong>正解：</strong>
+			<span th:switch="${question.correctAnswer}">
+				<span th:case="'option_1'" th:text="${question.option_1}" />
+				<span th:case="'option_2'" th:text="${question.option_2}" />
+				<span th:case="'option_3'" th:text="${question.option_3}" />
+				<span th:case="'option_4'" th:text="${question.option_4}" />
+			</span>
+		</p>
+
+		<p><strong>解説：</strong> <span th:text="${question.explanation}">ここに解説</span></p>
+		<br>
+
+		<!-- お気に入り登録ボタン -->
+		<div th:if="${session.user != null}" style="margin-top: 20px;">
+			<form action="/quiz/favorite/add" method="post">
+				<input type="hidden" name="quizId" th:value="${question.id}" />
+				<input type="hidden" name="index" th:value="${index}" />
+				<input type="hidden" name="category" th:value="${category}" />
+				<input type="hidden" name="mode" th:value="${mode}" />
+				<button type="submit" class="btn-purple">お気に入りに追加</button>
+			</form>
+		</div>
+		<br>
+
+		<!-- 次の問題へ -->
+		<form action="/quiz/next" method="get">
+			<input type="hidden" name="index" th:value="${index + 1}" />
+			<input type="hidden" name="category" th:value="${category}" />
+			<input type="hidden" name="mode" th:value="${mode}" />
+			<button type="submit" class="btn-yellow">次の問題へ</button>
+		</form>
+	</div>
 
 </body>
+
 
 </html>

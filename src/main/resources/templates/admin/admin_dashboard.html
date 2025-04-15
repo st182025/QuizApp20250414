@@ -14,7 +14,12 @@
 <body class="admin">
 	<div class="header-container">
 		<h1 class="header">管理者ダッシュボード</h1>
-		<a href="/admin/logout" class="home-link">ログアウト</a>
+
+		<!-- 右上のボタン群 -->
+		<div style="margin-left: auto;">
+			<a href="/logout" class="btn-red">ログアウト</a>　
+			<a href="/home" class="home-link" style="margin-right: 10px;">トップへ戻る</a>
+		</div>
 	</div>
 
 	<div class="dashboard-content">
@@ -42,7 +47,7 @@
 				<td th:text="${quiz.id}"></td>
 				<td th:text="${quiz.category.name}"></td>
 				<td th:text="${quiz.questionText}"></td>
-				<td th:switch="${quiz.correctAnswer}">
+				<td style="background-color: black;" th:switch="${quiz.correctAnswer}">
 					<span th:case="'option_1'" th:text="${quiz.option_1}"></span>
 					<span th:case="'option_2'" th:text="${quiz.option_2}"></span>
 					<span th:case="'option_3'" th:text="${quiz.option_3}"></span>

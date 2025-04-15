@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ユーザーマイページ</title>
+	<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+</head>
+
+<body class="mypage">
+	<div class="header-container">
+	    <h1 class="header">マイページ</h1>
+		<div class="header-links">
+		      <a th:if="${session.user != null}" href="/logout" class="btn-red" style="margin-right: 10px;">ログアウト</a>
+		      <a href="/home" class="home-link">トップへ戻る</a>
+		  </div>
+</div>
+
+	<div style="text-align: center; margin-top: 40px;">
+		<h2>ようこそ、<span th:text="${user.username}">ユーザー</span> さん</h2>
+		<p>プロフィール：<span th:text="${user.profile}">プロフィールが未設定です</span></p>
+		<p>メールアドレス：<span th:text="${user.email}">未登録</span></p>
+		<h2>お気に入りクイズ</h2>
+
+		<table class="quiz-table" style="margin: auto; text-align: center;">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>カテゴリ</th>
+					<th>問題</th>
+					<th>正解</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="quiz : ${favoriteQuizzes}">
+					<td th:text="${quiz.id}"></td>
+					<td th:text="${quiz.category.name}"></td>
+					<td th:text="${quiz.questionText}"></td>
+					<td style="background-color: black;" th:switch="${quiz.correctAnswer}">
+						<span th:case="'option_1'" th:text="${quiz.option_1}"></span>
+						<span th:case="'option_2'" th:text="${quiz.option_2}"></span>
+						<span th:case="'option_3'" th:text="${quiz.option_3}"></span>
+						<span th:case="'option_4'" th:text="${quiz.option_4}"></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+</body>
+
+</html>
