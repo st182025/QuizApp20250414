@@ -16,7 +16,7 @@
 		<h2 th:text="${session.user.username} + ' さん'"></h2>
 		<p>クイズアプリへようこそ！</p>
 		<div style="margin: 10px 0;">
-			<a href="/user/mypage" class="btn-blue" style="margin-right: 10px;">マイページへ</a>
+			<a href="/user/mypage" class="btn-blue" style="margin-right: 10px;">マイページへ</a> &nbsp;
 			<a href="/logout" class="btn-red">ログアウト</a>
 		</div>
 	</div>
@@ -34,9 +34,10 @@
 	<!--  クイズ開始フォームは共通で表示 -->
 	<form id="categoryForm" action="/quiz/start" method="get">
 		<p><strong>出題順：</strong></p>
-		<label><input type="radio" name="mode" value="normal" checked> ID順</label>
+		<label><input type="radio" name="mode" value="normal" checked> ID順</label> &nbsp; &nbsp;
 		<label><input type="radio" name="mode" value="shuffle"> シャッフル</label>
-
+		<br>
+		<br>
 		<p><strong>カテゴリを選んでください：</strong></p>
 		<input type="hidden" name="category" id="categoryInput">
 		<div class="category-container">
@@ -52,7 +53,7 @@
 			document.getElementById('categoryInput').value = category;
 		}
 	</script>
-	
+
 </body>
 
 </html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>新規ユーザー登録</title>
+	<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+</head>
+
+<body class="resister">
+	<div class="header-container">
+		    <h1 class="header">新規ユーザー登録</h1>
+			<div class="header-links">
+			      <a th:if="${session.user != null}" href="/user/mypage" class="btn-blue" style="margin-right: 10px;">マイページ</a>
+			      <a th:if="${session.user != null}" href="/logout" class="btn-red" style="margin-right: 10px;">ログアウト</a>
+			      <a href="/home" class="home-link">ホームへ戻る</a>
+			  </div>
+		</div>
+	<div class="resister-form">
+		<form id="registerForm" action="/register" method="post" class="admin-form">
+
+			<label for="username">ユーザー名：</label>
+			<input type="text" id="username" name="username" th:value="${username}" />
+			<p th:if="${usernameError}" style="color: red;">[[${usernameError}]]</p>
+
+			<label for="password">パスワード：</label>
+			<input type="password" id="password" name="password" />
+			<p th:if="${passwordError}" style="color: red;">[[${passwordError}]]</p>
+
+			<label for="email">メールアドレス（任意）：</label>
+			<input type="email" id="email" name="email" th:value="${email}" />
+
+			<label for="profile">プロフィール（任意）：</label>
+			<textarea id="profile" name="profile" rows="3" th:text="${profile}"></textarea>
+
+			<div class="form-button-row">
+				<button type="button" class="btn-green" onclick="validateBeforeModal()">登録する</button>
+				<a href="/login" class="btn-white">戻る</a>
+			</div>
+
+			<!-- モーダル①：確認 -->
+			<div id="confirmModal" class="modal-overlay" style="display:none;">
+				<div class="modal-box">
+					<p>この内容で登録しますか？</p>
+					<div style="margin-top: 20px;">
+						<button type="button" class="btn-green" onclick="submitForm()">はい</button>
+						<button type="button" class="btn-white" onclick="closeConfirmModal()">いいえ</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- モーダル②：登録完了 -->
+			<div id="successModal" class="modal-overlay" th:if="${saved}" style="display:flex;">
+				<div class="modal-box">
+					<p>登録しました！</p>
+					<div style="margin-top: 20px;">
+						<a href="/home" class="btn-blue">ホームへ戻る</a>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<!-- JS：バリデーションとモーダル制御 -->
+	<script>
+		function validateBeforeModal() {
+			const username = document.getElementById('username').value.trim();
+			const password = document.getElementById('password').value.trim();
+
+			// エラーメッセージのリセット
+			const usernameError = document.querySelector("#username + p");
+			if (usernameError) usernameError.remove();
+
+			const passwordError = document.querySelector("#password + p");
+			if (passwordError) passwordError.remove();
+
+			let hasError = false;
+
+			// ユーザー名チェック
+			// ユーザー名チェック
+			if (!username) {
+				const msg = document.createElement("p");
+				msg.textContent = "ユーザー名は必須です。";
+				msg.style.color = "red";
+				document.getElementById("username").after(msg);
+				hasError = true;
+			} else if (username.length > 10) {
+				const msg = document.createElement("p");
+				msg.textContent = "ユーザー名は10文字以内にしてください。";
+				msg.style.color = "red";
+				document.getElementById("username").after(msg);
+				hasError = true;
+			} else if (!/^[a-zA-Z0-9]+$/.test(username)) {
+				const msg = document.createElement("p");
+				msg.textContent = "ユーザー名は半角英数字で入力してください。";
+				msg.style.color = "red";
+				document.getElementById("username").after(msg);
+				hasError = true;
+			}
+
+
+			// パスワードチェック
+			if (!password) {
+				const msg = document.createElement("p");
+				msg.textContent = "パスワードは必須です。";
+				msg.style.color = "red";
+				document.getElementById("password").after(msg);
+				hasError = true;
+			} else if (password.length > 10) {
+				const msg = document.createElement("p");
+				msg.textContent = "パスワードは10文字以内にしてください。";
+				msg.style.color = "red";
+				document.getElementById("password").after(msg);
+				hasError = true;
+			}
+
+			if (hasError) return;
+
+			// 重複チェック
+			fetch(`/check-username?username=${encodeURIComponent(username)}`)
+				.then(response => response.text())
+				.then(text => {
+					if (text.includes("true")) {
+						const msg = document.createElement("p");
+						msg.textContent = "そのユーザー名は既に使用されています。";
+						msg.style.color = "red";
+						document.getElementById("username").after(msg);
+					} else {
+						document.getElementById('confirmModal').style.display = 'flex';
+					}
+				});
+		}
+
+
+		function submitForm() {
+			// モーダル①を閉じて、フォームをsubmit（→SpringのPOST /registerへ）
+			document.getElementById('confirmModal').style.display = 'none';
+			document.getElementById('registerForm').submit();
+		}
+		function closeConfirmModal() {
+			document.getElementById('confirmModal').style.display = 'none';
+			// 入力内容は既に form に残っているので再入力は不要
+		}
+	</script>
+</body>
+
+</html>

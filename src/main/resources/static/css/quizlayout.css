@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/* === 全体背景・フォント設定 === */
 body {
 	background: radial-gradient(circle, #ffffff 0%, #cccccc 50%, #999999 100%);
 	min-height: 100vh;
@@ -7,6 +8,7 @@ body {
 	font-family: sans-serif;
 }
 
+/* === ヘッダー全体の横並びレイアウト === */
 .header-container {
 	display: flex;
 	justify-content: space-between;
@@ -14,6 +16,7 @@ body {
 	padding: 20px 40px;
 }
 
+/* === ページタイトルのスタイル === */
 .header {
 	text-align: center;
 	margin-top: 30px;
@@ -21,8 +24,9 @@ body {
 	color: #333;
 }
 
+/* === トップへ戻るリンクボタン === */
 .home-link {
-	background: linear-gradient(to bottom, #444444, #000000);  /* 明るい青 → 水色系 */
+	background: linear-gradient(to bottom, #444444, #000000);
 	color: white;
 	padding: 10px 16px;
 	border: none;
@@ -39,15 +43,16 @@ body {
 	opacity: 0.9;
 }
 
+/* === ホーム画面全体のレイアウト === */
 .home {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	/* justify-content: center; */
 	text-align: center;
 	min-height: 100vh;
 }
 
+/* === ホーム画面のタイトル === */
 .title {
 	font-size: 3rem;
 	margin-top: 50px;
@@ -56,6 +61,7 @@ body {
 	color: #ff8000;
 }
 
+/* === カテゴリボタンの外枠レイアウト === */
 .category-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -65,9 +71,10 @@ body {
 	max-width: 600px;
 }
 
+/* === カテゴリ選択ボタンの見た目 === */
 .category-btn {
-	width: 160px; /* ← 幅を固定 */
-	height: 60px; /* ← 高さを統一 */
+	width: 160px;
+	height: 60px;
 	font-size: 1.1em;
 	background-color: #4caf50;
 	color: white;
@@ -81,6 +88,41 @@ body {
 	background-color: #388e3c;
 }
 
+/* === ユーザー登録画面のフォーム全体位置 === */
+.resister-form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 80vh;
+	padding: 20px;
+	margin-top: -80px;
+}
+
+/* === ユーザー登録フォームの枠 === */
+.resister-form .admin-form {
+	width: 100%;
+	max-width: 320px;
+	background-color: #f9fcff;
+	padding: 20px;
+	border-radius: 12px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* === 入力フィールドの共通スタイル === */
+.admin-form input[type="text"],
+.admin-form input[type="password"],
+.admin-form input[type="email"],
+.admin-form textarea {
+	width: 100%;
+	padding: 8px;
+	margin-bottom: 12px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	font-size: 1rem;
+}
+
+/* === クイズ出題部のテキスト表示エリア === */
 .question-area {
 	margin-left: 10%;
 	margin-top: 20px;
@@ -88,6 +130,7 @@ body {
 	font-size: 1.2em;
 }
 
+/* === 選択肢ボタンを2列配置 === */
 .option-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -96,6 +139,7 @@ body {
 	margin: 0 auto;
 }
 
+/* === クイズ選択肢ボタンの見た目 === */
 .option-btn {
 	width: 48%;
 	padding: 12px;
@@ -111,22 +155,22 @@ body {
 	background-color: #eee;
 }
 
-
-
+/* === 正解・不正解画面の中央表示エリア === */
 .answer .main-content {
 	text-align: center;
 	padding: 30px;
 	font-size: 1.2em;
 }
-/* 管理者ログインボタンのコンテナ */
+
+/* === 管理者ログイン画面全体 === */
 .adminlogin-container {
 	margin-top: 68px;
 	text-align: center;
 }
 
-/* 管理者ログインボタンのスタイル */
+/* === 管理者ログインボタン === */
 .adminlogin-btn {
-	background: linear-gradient(to bottom, #cccccc, #999999); /* 銀色グラデ */
+	background: linear-gradient(to bottom, #cccccc, #999999);
 	border: none;
 	color: #fff;
 	font-size: 1em;
@@ -134,14 +178,15 @@ body {
 	border-radius: 10px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
-	white-space: nowrap; /* 改行させない */
-	width: 250px; /* 長めの幅に調整 */
+	white-space: nowrap;
+	width: 250px;
 }
 
 .adminlogin-btn:hover {
 	background: linear-gradient(to bottom, #bbbbbb, #777777);
 }
 
+/* === 管理者ログインフォーム全体 === */
 .adminlogin-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -149,17 +194,19 @@ body {
 	justify-content: center;
 	text-align: center;
 	margin-top: 80px;
-	font-size: 1.2em; /* 全体を大きく */
+	font-size: 1.2em;
 }
 
-.adminlogin-wrapper input[type="text"], .adminlogin-wrapper input[type="password"]
-	{
+/* === 管理者ログインフォームの入力欄 === */
+.adminlogin-wrapper input[type="text"],
+.adminlogin-wrapper input[type="password"] {
 	padding: 10px;
 	font-size: 1em;
-	width: 250px; /* フォームの幅を広く */
+	width: 250px;
 	margin: 5px 0;
 }
 
+/* === 管理者ログインの送信ボタン === */
 .adminlogin-wrapper button {
 	padding: 10px 20px;
 	font-size: 1em;
@@ -174,88 +221,9 @@ body {
 	background-color: #aaa;
 }
 
-.btn-gold {
-	background: linear-gradient(to bottom, #ffd700, #e6be00);
-	color: #000;
-	padding: 10px 18px;
-	border: none;
-	border-radius: 8px;
-	font-size: 1.3em;
-	text-decoration: none;
-	cursor: pointer;
-	/* ここが追加ポイント！ */
-	display: inline-block;
-	/* アニメーション */
-	transition: transform 0.2s ease, opacity 0.3s ease;
-}
-
-.btn-gold:hover {
-	transform: scale(1.1);
-	opacity: 0.8;
-}
-
-.quiz-table {
-	width: 90%;
-	margin: auto;
-	border-collapse: collapse;
-	table-layout: fixed; /* 列幅を固定にしてCSSのwidthが効くように */
-}
-
-.quiz-table th, .quiz-table td {
-	padding: 12px 8px;
-	border: 1px solid #ccc;
-	text-align: center;
-	word-wrap: break-word; /* 長文も折り返し可能に */
-}
-
-/* 各列の幅調整（全体のバランス調整） */
-.quiz-table th:nth-child(1), .quiz-table td:nth-child(1) {
-	width: 5%; /* ID */
-}
-
-.quiz-table th:nth-child(2), .quiz-table td:nth-child(2) {
-	width: 10%; /* カテゴリ名 */
-}
-
-.quiz-table th:nth-child(3), .quiz-table td:nth-child(3) {
-	width: 55%; /* 問題文：一番広く */
-}
-
-.quiz-table th:nth-child(4), .quiz-table td:nth-child(4) {
-	width: 20%; /* 正解 */
-}
-
-.quiz-table th:nth-child(5), .quiz-table td:nth-child(5), .quiz-table th:nth-child(6),
-	.quiz-table td:nth-child(6) {
-	width: 10%; /* 編集・削除ボタン列 */
-}
-
-@media ( max-width : 768px) {
-	.quiz-table {
-		font-size: 0.9em;
-	}
-	.quiz-table th, .quiz-table td {
-		padding: 10px 6px;
-	}
-}
-
-.quiz-table th {
-	background-color: #80ffff;
-	font-weight: bold;
-}
-
-.quiz-table td {
-	background-color: #fff;
-	font-weight: bold;
-}
-/*正解欄黒塗り*/
-.answer-cell {
-	background: #000;
-	
-}
-
+/* === ボタン群（緑、赤、白、青、金、紫など） === */
 .btn-green {
-	background: linear-gradient(to bottom, #66bb6a, #388e3c); 
+	background: linear-gradient(to bottom, #66bb6a, #388e3c);
 	color: white;
 	padding: 10px 16px;
 	border: none;
@@ -273,7 +241,7 @@ body {
 }
 
 .btn-red {
-	background: linear-gradient(to bottom, #ef5350, #c62828); 
+	background: linear-gradient(to bottom, #ef5350, #c62828);
 	color: white;
 	padding: 10px 16px;
 	border: none;
@@ -291,7 +259,7 @@ body {
 }
 
 .btn-white {
-	background: linear-gradient(to bottom, #fff, #dad); 
+	background: linear-gradient(to bottom, #fff, #dad);
 	color: black;
 	padding: 10px 16px;
 	border: none;
@@ -309,7 +277,7 @@ body {
 }
 
 .btn-blue {
-	background: linear-gradient(to bottom,  #4facfe, #00f2fe); 
+	background: linear-gradient(to bottom, #4facfe, #00f2fe);
 	color: black;
 	padding: 10px 16px;
 	border: none;
@@ -325,8 +293,9 @@ body {
 	transform: scale(1.1);
 	opacity: 0.9;
 }
+
 .btn-yellow {
-	background: linear-gradient(to bottom, #fff176, #fbc02d); /* 明るい黄色→濃い黄色 */
+	background: linear-gradient(to bottom, #fff176, #fbc02d);
 	color: black;
 	padding: 10px 16px;
 	border: none;
@@ -343,12 +312,66 @@ body {
 	opacity: 0.9;
 }
 
-/*新規問題作成フォーム*/
+.btn-gold {
+	background: linear-gradient(to bottom, #ffd700, #e6be00);
+	color: #000;
+	padding: 10px 18px;
+	border: none;
+	border-radius: 8px;
+	font-size: 1.3em;
+	text-decoration: none;
+	cursor: pointer;
+	display: inline-block;
+	transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.btn-gold:hover {
+	transform: scale(1.1);
+	opacity: 0.8;
+}
+
+.btn-purple {
+	background: linear-gradient(to bottom right, #b39ddb, #7e57c2);
+	color: white;
+	padding: 6px 14px;
+	border: none;
+	border-radius: 6px;
+	text-decoration: none;
+	font-size: 0.9em;
+	cursor: pointer;
+	transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.btn-purple:hover {
+	transform: scale(1.1);
+	opacity: 0.9;
+}
+
+/* === カテゴリ行（セレクトと追加ボタン横並び） === */
+.category-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 20px;
+}
+
+/* === カテゴリ追加ボタン専用設定 === */
+.category-add-btn {
+	padding: 10px 14px;
+	font-size: 0.9em;
+	height: 42px;
+	display: flex;
+	align-items: center;
+	white-space: nowrap;
+	margin-left: auto;
+}
+
+/* === 新規問題作成フォーム === */
 .admin-form-wrapper {
 	display: flex;
 	justify-content: center;
 	margin-top: 40px;
-	margin-bottom: 60px; 
+	margin-bottom: 60px;
 }
 
 .admin-form {
@@ -368,7 +391,8 @@ body {
 	font-size: 1.05em;
 }
 
-.admin-form input[type="text"], .admin-form textarea {
+.admin-form input[type="text"],
+.admin-form textarea {
 	width: 100%;
 	padding: 10px;
 	font-size: 1em;
@@ -377,61 +401,84 @@ body {
 	box-sizing: border-box;
 }
 
-/* プルダウンのスタイル */
+/* === セレクトボックスの共通スタイル === */
 .admin-form select {
-    width: 60%;               /* フォーム幅に合わせる */
-    padding: 10px;
-    font-size: 1.1em;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
+	width: 60%;
+	padding: 10px;
+	font-size: 1.1em;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	box-sizing: border-box;
 }
-/*入力内容を保存*/
+
+/* === 登録ボタンなどの行 === */
 .form-button-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-top: 30px;
 }
 
-/*カテゴリ追加*/
-.btn-purple{
-    background: linear-gradient(to bottom right, #b39ddb, #7e57c2); /* 薄紫 → 濃い紫 */
-    color: white;
-    padding: 6px 14px;
-    border: none;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.3s ease;
+/* === クイズ一覧テーブル === */
+.quiz-table {
+	width: 90%;
+	margin: auto;
+	border-collapse: collapse;
+	table-layout: fixed;
+	margin-bottom: 50px;
+	text-align: center;
 }
 
-.btn-purple:hover {
-    transform: scale(1.1);
-    opacity: 0.9;
+.quiz-table th,
+.quiz-table td {
+	padding: 12px 8px;
+	border: 1px solid #ccc;
+	word-wrap: break-word;
 }
 
-/* カテゴリの行全体を横並びに揃える */
-.category-row {
-    display: flex;
-    align-items: center;      /* 高さ中央揃え */
-    gap: 12px;
-    margin-bottom: 20px;
+.quiz-table th:nth-child(1),
+.quiz-table td:nth-child(1) {
+	width: 5%;
 }
 
-/* カテゴリ追加ボタン専用 */
-.category-add-btn {
-    padding: 10px 14px;
-    font-size: 0.9em;
-    height: 42px;              /* select の高さに合わせる */
-    display: flex;
-    align-items: center;
-    white-space: nowrap;       /* ボタン内改行防止 */
-    margin-left: auto;
+.quiz-table th:nth-child(2),
+.quiz-table td:nth-child(2) {
+	width: 10%;
 }
 
-/* 確認モーダル*/
+.quiz-table th:nth-child(3),
+.quiz-table td:nth-child(3) {
+	width: 55%;
+}
+
+.quiz-table th:nth-child(4),
+.quiz-table td:nth-child(4) {
+	width: 20%;
+}
+
+.quiz-table th:nth-child(5),
+.quiz-table td:nth-child(5),
+.quiz-table th:nth-child(6),
+.quiz-table td:nth-child(6) {
+	width: 10%;
+}
+
+.quiz-table th {
+	background-color: #80ffff;
+	font-weight: bold;
+}
+
+.quiz-table td {
+	background-color: #fff;
+	font-weight: bold;
+}
+
+/* === 正解セルだけ黒塗り === */
+.answer-cell {
+	background: #000;
+}
+
+/* === モーダル全体オーバーレイ === */
 .modal-overlay {
 	position: fixed;
 	top: 0;
@@ -453,6 +500,7 @@ body {
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
+/* === モバイル対応（レスポンシブ） === */
 @media screen and (max-width: 600px) {
 	.question-area {
 		margin: 0 auto;

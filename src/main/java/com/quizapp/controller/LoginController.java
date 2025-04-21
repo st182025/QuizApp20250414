@@ -44,8 +44,7 @@ public class LoginController {
         @RequestParam String password,
         @RequestParam String role,
         HttpSession session,
-        Model model
-    ) {
+        Model model) {
         if ("admin".equals(role)) {
             AdminUserEntity admin = adminRepo.findByUsername(username);
             if (admin != null && admin.getPassword().equals(password)) {

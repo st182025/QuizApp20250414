@@ -8,89 +8,117 @@
 </head>
 
 <body class="admin">
-
 	<div class="header-container">
 		<h1 class="header">新規問題作成</h1>
 		<a href="/admin/logout" class="home-link">ログアウト</a>
 	</div>
 
 	<div class="admin-form-wrapper">
-		<form action="/admin/save" method="post" class="admin-form">
+		<form id="quizForm" action="/admin/save" method="post" class="admin-form">
 
-			<!-- カテゴリ名と追加ボタンを横並びで配置 -->
+			<!-- カテゴリ -->
 			<label for="category">カテゴリ名：</label>
 			<div class="category-row">
-				<select id="category" name="category" required>
-					<option value="" disabled selected>選択してください</option>
-					<option th:each="cat : ${categoryList}" th:value="${cat.name}" th:text="${cat.name}"></option>
+				<select id="category" name="category">
+					<option value="" disabled th:unless="${category}" selected>選択してください</option>
+					<option th:each="cat : ${categoryList}" th:value="${cat.name}" th:text="${cat.name}" th:selected="${cat.name == category}"></option>
 				</select>
-
 				<a href="/admin/category/new" class="btn-purple category-add-btn">カテゴリを増やす</a>
 			</div>
-
+			<p th:if="${categoryError}" style="color: red;">[[${categoryError}]]</p>
 
 			<label for="questionText">問題文：</label>
-			<textarea id="questionText" name="questionText" rows="3" required></textarea>
+			<textarea id="questionText" name="questionText" rows="3" th:text="${questionText}"></textarea>
+			<p th:if="${questionTextError}" style="color: red;">[[${questionTextError}]]</p>
 
 			<label for="option_1">選択肢 1：</label>
-			<input type="text" id="option_1" name="option_1" required>
+			<input type="text" id="option_1" name="option_1" th:value="${option_1}" />
+			<p th:if="${option1Error}" style="color: red;">[[${option1Error}]]</p>
 
 			<label for="option_2">選択肢 2：</label>
-			<input type="text" id="option_2" name="option_2" required>
+			<input type="text" id="option_2" name="option_2" th:value="${option_2}" />
+			<p th:if="${option2Error}" style="color: red;">[[${option2Error}]]</p>
 
 			<label for="option_3">選択肢 3：</label>
-			<input type="text" id="option_3" name="option_3" required>
+			<input type="text" id="option_3" name="option_3" th:value="${option_3}" />
+			<p th:if="${option3Error}" style="color: red;">[[${option3Error}]]</p>
 
 			<label for="option_4">選択肢 4：</label>
-			<input type="text" id="option_4" name="option_4" required>
+			<input type="text" id="option_4" name="option_4" th:value="${option_4}" />
+			<p th:if="${option4Error}" style="color: red;">[[${option4Error}]]</p>
 
 			<label for="correctAnswer">正解：</label>
-			<select id="correctAnswer" name="correctAnswer" required>
-				<option value="" disabled selected>選択してください</option>
-				<option value="option_1">選択肢 1</option>
-				<option value="option_2">選択肢 2</option>
-				<option value="option_3">選択肢 3</option>
-				<option value="option_4">選択肢 4</option>
+			<select id="correctAnswer" name="correctAnswer">
+				<option value="" disabled th:unless="${correctAnswer}" selected>選択してください</option>
+				<option value="option_1" th:selected="${correctAnswer == 'option_1'}">選択肢 1</option>
+				<option value="option_2" th:selected="${correctAnswer == 'option_2'}">選択肢 2</option>
+				<option value="option_3" th:selected="${correctAnswer == 'option_3'}">選択肢 3</option>
+				<option value="option_4" th:selected="${correctAnswer == 'option_4'}">選択肢 4</option>
 			</select>
-
+			<p th:if="${correctAnswerError}" style="color: red;">[[${correctAnswerError}]]</p>
 
 			<label for="explanation">解説：</label>
-			<textarea id="explanation" name="explanation" rows="3" required></textarea>
+			<textarea id="explanation" name="explanation" rows="3" th:text="${explanation}"></textarea>
+			<p th:if="${explanationError}" style="color: red;">[[${explanationError}]]</p>
 
+			<!-- ボタン -->
 			<div class="form-button-row">
-				<button type="button" class="btn-green" onclick="openConfirmModal()">入力内容を保存</button>
+				<button type="button" class="btn-green" onclick="validateBeforeModal()">入力内容を保存</button>
 				<a href="/admin/dashboard" class="btn-white">戻る</a>
 			</div>
-			<!-- モーダル本体 -->
+
+			<!-- 確認モーダル（保存前） -->
 			<div id="confirmModal" class="modal-overlay" style="display:none;">
 				<div class="modal-box">
 					<p>この内容で保存してもよろしいですか？</p>
 					<div style="margin-top: 20px;">
-						<button class="btn-green" onclick="submitForm()">保存する</button>
-						<button class="btn-white" onclick="closeConfirmModal()">キャンセル</button>
+						<button type="submit" class="btn-green">保存する</button>
+						<button type="button" class="btn-white" onclick="closeConfirmModal()">キャンセル</button>
 					</div>
 				</div>
 			</div>
 
-			<!-- モーダル用 JS -->
-			<script>
-				function openConfirmModal() {
-					document.getElementById('confirmModal').style.display = 'flex';
-				}
-
-				function closeConfirmModal() {
-					document.getElementById('confirmModal').style.display = 'none';
-				}
-
-				function submitForm() {
-					const form = document.querySelector('.admin-form');
-					form.querySelector('button[type="submit"]')?.setAttribute("disabled", true); // 二重送信防止
-					form.submit();
-				}
-			</script>
 		</form>
 	</div>
 
+	<!-- 成功モーダル（保存後） -->
+	<div id="successModal" class="modal-overlay" style="display:none;">
+		<div class="modal-box">
+			<p>保存しました！</p>
+			<div style="margin-top: 20px;">
+				<a href="/admin/dashboard" class="btn-blue">ダッシュボードへ</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- JSでバリデーションとモーダル制御 -->
+	<script>
+		function validateBeforeModal() {
+			const form = document.getElementById('quizForm');
+			const requiredFields = ['category', 'questionText', 'option_1', 'option_2', 'option_3', 'option_4', 'correctAnswer', 'explanation'];
+
+			let hasError = false;
+			requiredFields.forEach(id => {
+				const el = document.getElementById(id);
+				if (!el.value.trim()) {
+					hasError = true;
+				}
+			});
+
+			if (hasError) {
+				form.submit(); // 空欄がある場合、サーバー側に渡してエラーメッセージ表示
+			} else {
+				document.getElementById('confirmModal').style.display = 'flex';
+			}
+		}
+
+		function closeConfirmModal() {
+			document.getElementById('confirmModal').style.display = 'none';
+		}
+	</script>
+	<script th:if="${saved}">
+		document.getElementById('successModal').style.display = 'flex';
+	</script>
 </body>
 
 </html>

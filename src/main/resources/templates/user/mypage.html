@@ -9,12 +9,12 @@
 
 <body class="mypage">
 	<div class="header-container">
-	    <h1 class="header">マイページ</h1>
+		<h1 class="header">マイページ</h1>
 		<div class="header-links">
-		      <a th:if="${session.user != null}" href="/logout" class="btn-red" style="margin-right: 10px;">ログアウト</a>
-		      <a href="/home" class="home-link">トップへ戻る</a>
-		  </div>
-</div>
+			<a th:if="${session.user != null}" href="/logout" class="btn-red" style="margin-right: 10px;">ログアウト</a>
+			<a href="/home" class="home-link">トップへ戻る</a>
+		</div>
+	</div>
 
 	<div style="text-align: center; margin-top: 40px;">
 		<h2>ようこそ、<span th:text="${user.username}">ユーザー</span> さん</h2>

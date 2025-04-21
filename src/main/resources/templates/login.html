@@ -3,41 +3,44 @@
 <link rel="stylesheet" th:href="@{/css/quizlayout.css}">
 
 <head>
-    <meta charset="UTF-8">
-    <title>ログイン</title>
+	<meta charset="UTF-8">
+	<title>ログイン</title>
 </head>
 
 <body class="admin">
-    <div class="adminlogin-wrapper">
-        <form action="/login" method="post">
-            <h1>ログイン</h1>
+	<div class="adminlogin-wrapper">
+		<form action="/login" method="post">
+			<h1>ログイン</h1>
 
-            <label for="username">ユーザー名：</label>
-            <input type="text" id="username" name="username" required
-                   pattern="[a-zA-Z0-9]+" title="半角英数字のみで入力してください">
+			<label for="username">ユーザー名：</label>
+			<input type="text" id="username" name="username" required pattern="[a-zA-Z0-9]+" title="半角英数字のみで入力してください">
 
-            <br>
+			<br>
 
-            <label for="password">パスワード：</label>
-            <input type="password" id="password" name="password" required
-                   pattern="[a-zA-Z0-9]{4,}" title="半角英数字で4文字以上入力してください">
+			<label for="password">パスワード：</label>
+			<input type="password" id="password" name="password" required pattern="[a-zA-Z0-9]{4,}"
+				title="半角英数字で4文字以上入力してください">
 
-            <br>
+			<br>
 
-            <label>ログイン種別：</label><br>
-            <label><input type="radio" name="role" value="admin" required> 管理者</label>
-            <label><input type="radio" name="role" value="user" required> ユーザー</label>
+			<label>ログイン種別：</label><br>
+			<label><input type="radio" name="role" value="admin" required> 管理者</label>
+			<label><input type="radio" name="role" value="user" required> ユーザー</label>
 
-            <br><br>
+			<br><br>
 
-            <button type="submit">ログイン</button>
-        </form>
+			<button type="submit">ログイン</button>
+		</form>
 
-        <p th:if="${loginError}" style="color: red;">[[${loginError}]]</p>
+		<p th:if="${loginError}" style="color: red;">[[${loginError}]]</p>
 
-        <form action="/home" method="get" style="margin-top: 20px;">
-            <button type="submit" class="home-btn">ホームへ戻る</button>
-        </form>
-    </div>
+
+		<form action="/home" method="get" style="margin-top: 20px;">
+			<button type="submit" class="home-btn">ホームへ戻る</button>
+		</form>
+		<br>
+		<p>アカウントをお持ちでない方は <a href="/register">新規登録</a></p>
+	</div>
 </body>
+
 </html>
