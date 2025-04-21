@@ -168,4 +168,5 @@ public class AdminController {
 	 model.addAttribute("categoryList", categoryRepository.findAll());
 	 return "admin/admin_new";
 	}
+	
 }

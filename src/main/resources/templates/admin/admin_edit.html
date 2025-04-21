@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>問題編集</title>
+	<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+</head>
+<body class="admin">
+	<div class="header-container">
+		<h1 class="header">問題編集</h1>
+		<div style="margin-left: auto;">
+			<a href="/admin/dashboard" class="home-link">ダッシュボードへ戻る</a>
+		</div>
+	</div>
+
+	<div class="admin-form-wrapper">
+		<form action="/admin/edit" method="post" class="admin-form" th:object="${quiz}">
+			
+			<input type="hidden" th:field="*{id}" />
+			
+			<label for="category">カテゴリ：</label>
+			<select id="category" th:field="*{category.id}">
+				<option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+			</select>
+
+			<label for="questionText">問題文：</label>
+			<textarea id="questionText" th:field="*{questionText}" rows="3"></textarea>
+
+			<label for="option_1">選択肢1：</label>
+			<input type="text" id="option_1" th:field="*{option_1}" />
+
+			<label for="option_2">選択肢2：</label>
+			<input type="text" id="option_2" th:field="*{option_2}" />
+
+			<label for="option_3">選択肢3：</label>
+			<input type="text" id="option_3" th:field="*{option_3}" />
+
+			<label for="option_4">選択肢4：</label>
+			<input type="text" id="option_4" th:field="*{option_4}" />
+
+			<label for="correctAnswer">正解（option_1〜4）：</label>
+			<select id="correctAnswer" th:field="*{correctAnswer}">
+				<option value="option_1">選択肢1</option>
+				<option value="option_2">選択肢2</option>
+				<option value="option_3">選択肢3</option>
+				<option value="option_4">選択肢4</option>
+			</select>
+
+			<div class="form-button-row">
+				<button type="button" class="btn-green" onclick="showUpdateModal()">変更する</button>
+				<button type="button" class="btn-white" onclick="showCancelModal()">戻る</button>
+			</div>
+
+			<!-- 第一モーダル：変更確認 -->
+			<div id="updateModal" class="modal-overlay" style="display:none;">
+				<div class="modal-box">
+					<p>変更を保存しますか？</p>
+					<div style="margin-top: 20px;">
+						<button type="submit" class="btn-green">はい</button>
+						<button type="button" class="btn-white" onclick="closeUpdateModal()">いいえ</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 第一モーダル：キャンセル確認 -->
+			<div id="cancelModal" class="modal-overlay" style="display:none;">
+				<div class="modal-box">
+					<p>編集内容を破棄して戻りますか？</p>
+					<div style="margin-top: 20px;">
+						<a href="/admin/dashboard" class="btn-blue">はい</a>
+						<button type="button" class="btn-white" onclick="closeCancelModal()">いいえ</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 第二モーダル：保存完了 -->
+			<div id="successModal" class="modal-overlay" th:if="${updated}" style="display:flex;">
+				<div class="modal-box">
+					<p>変更しました！</p>
+					<div style="margin-top: 20px;">
+						<a href="/admin/dashboard" class="btn-blue">ダッシュボードへ</a>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+	<!-- JavaScript：モーダル制御 -->
+	<script>
+		function showUpdateModal() {
+			document.getElementById('updateModal').style.display = 'flex';
+		}
+		function closeUpdateModal() {
+			document.getElementById('updateModal').style.display = 'none';
+		}
+		function showCancelModal() {
+			document.getElementById('cancelModal').style.display = 'flex';
+		}
+		function closeCancelModal() {
+			document.getElementById('cancelModal').style.display = 'none';
+		}
+	</script>
+</body>
+</html>
