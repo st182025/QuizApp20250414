@@ -1,59 +1,122 @@
+<!-- home.html（モーダル＆3列対応）-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
-
 <head>
-	<meta charset="UTF-8">
-	<title>クイズアプリ</title>
+    <meta charset="UTF-8">
+    <title>クイズアプリ</title>
+    <link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+    <style>
+        .category-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            max-width: 700px;
+            margin: 20px auto;
+        }
+        .category-btn.large {
+            width: 300px;
+            height: 70px;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+    </style>
 </head>
-
 <body class="home">
-	<h1 class="title">Quiz App</h1>
-	<br>
+<h1 class="title">Quiz App</h1>
+<br>
 
-	<!--  ログインユーザー用表示 -->
-	<div th:if="${session.user != null}">
-		<h2 th:text="${session.user.username} + ' さん'"></h2>
-		<p>クイズアプリへようこそ！</p>
-		<div style="margin: 10px 0;">
-			<a href="/user/mypage" class="btn-blue" style="margin-right: 10px;">マイページへ</a> &nbsp;
-			<a href="/logout" class="btn-red">ログアウト</a>
-		</div>
+<div th:if="${session.user != null}">
+    <h2 th:text="${session.user.username} + ' さん'"></h2>
+    <h2>クイズアプリへようこそ！</h2>
+    <div style="margin: 10px 0;">
+        <a href="/user/mypage" class="btn-blue" style="margin-right: 10px;">マイページへ</a>
+        <a href="/logout" class="btn-red">ログアウト</a>
+    </div>
+</div>
+
+<div th:if="${session.user == null}">
+    <h2>クイズアプリへようこそ！</h2>
+    <div class="adminlogin-container">
+        <form action="/login" method="get">
+            <button type="submit" class="adminlogin-btn">ログイン</button>
+        </form>
+    </div>
+</div>
+
+<form id="categoryForm" action="/quiz/start" method="get">
+    <p><strong>出題順：</strong></p>
+    <label><input type="radio" name="mode" value="normal" checked> ID順</label>
+    <label><input type="radio" name="mode" value="shuffle"> シャッフル</label>
+    <br><br>
+    <p><strong>カテゴリを選んでください：</strong></p>
+    <input type="hidden" name="category" id="categoryInput">
+	<!-- 上段：オールジャンル -->
+	<div class="category-container-top">
+	    <button type="button" onclick="confirmCategory('all')" class="category-btn large">オールジャンル</button>
 	</div>
 
-	<!--  未ログインユーザー用表示 -->
-	<div th:if="${session.user == null}">
-		<h2>クイズアプリへようこそ！</h2>
-		<div class="adminlogin-container">
-			<form action="/login" method="get">
-				<button type="submit" class="adminlogin-btn">ログイン</button>
-			</form>
-		</div>
+	<!-- 下段：ジャンル3つ -->
+	<div class="category-container-bottom">
+	    <button type="button" onclick="confirmCategory('math')" class="category-btn small">数学</button>
+	    <button type="button" onclick="confirmCategory('history')" class="category-btn small">歴史</button>
+	    <button type="button" onclick="confirmCategory('trivia')" class="category-btn small">雑学</button>
 	</div>
 
-	<!--  クイズ開始フォームは共通で表示 -->
-	<form id="categoryForm" action="/quiz/start" method="get">
-		<p><strong>出題順：</strong></p>
-		<label><input type="radio" name="mode" value="normal" checked> ID順</label> &nbsp; &nbsp;
-		<label><input type="radio" name="mode" value="shuffle"> シャッフル</label>
-		<br>
-		<br>
-		<p><strong>カテゴリを選んでください：</strong></p>
-		<input type="hidden" name="category" id="categoryInput">
-		<div class="category-container">
-			<button type="submit" onclick="setCategory('all')" class="category-btn">オールジャンル</button>
-			<button type="submit" onclick="setCategory('math')" class="category-btn">算数</button>
-			<button type="submit" onclick="setCategory('history')" class="category-btn">歴史</button>
-			<button type="submit" onclick="setCategory('trivia')" class="category-btn">雑学</button>
-		</div>
-	</form>
+</form>
 
-	<script>
-		function setCategory(category) {
-			document.getElementById('categoryInput').value = category;
-		}
-	</script>
+<!-- モーダル -->
+<div id="confirmModal" class="modal-overlay">
+    <div class="modal-box">
+        <p id="confirmText"></p>
+        <div style="margin-top: 20px;">
+            <button type="button" class="btn-green" onclick="submitCategory()">はい</button>&nbsp;&nbsp;
+            <button type="button" class="btn-white" onclick="closeModal()">いいえ</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedCategory = "";
+    function confirmCategory(category) {
+        selectedCategory = category;
+        document.getElementById("confirmText").innerText = categoryName(category) + "のクイズを開始しますか？";
+        document.getElementById("confirmModal").style.display = "flex";
+    }
+    function closeModal() {
+        document.getElementById("confirmModal").style.display = "none";
+    }
+    function submitCategory() {
+        document.getElementById("categoryInput").value = selectedCategory;
+        document.getElementById("categoryForm").submit();
+    }
+    function categoryName(code) {
+        switch(code) {
+            case "all": return "オールジャンル";
+            case "math": return "数学";
+            case "history": return "歴史";
+            case "trivia": return "雑学";
+            default: return "この";
+        }
+    }
+</script>
 
 </body>
-
 </html>

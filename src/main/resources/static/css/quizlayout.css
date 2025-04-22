@@ -65,14 +65,42 @@ body {
 .category-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 12px;
 	justify-content: center;
-	margin: 20px auto;
-	max-width: 600px;
+	gap: 24px 40px; /* 上下24px, 左右30px の余白 */
+	margin: 30px auto;
+	max-width: 720px;
+}
+/* === オールジャンルを1行で中央配置 === */
+.category-container-top {
+	
+	justify-content: center;
+	margin-bottom: 30px;
 }
 
-/* === カテゴリ選択ボタンの見た目 === */
-.category-btn {
+/* === 下段：ジャンル3つを3列で表示（間隔あり） === */
+.category-container-bottom {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 24px 40px; /* 縦・横の余白 感覚の調整*/ 
+	max-width: 720px;
+	margin: 0 auto;
+}
+
+/* === 上段　オールジャンル用の特別サイズ === */
+.category-btn.large {
+	width: 500px;
+	font-size: 1.1em;
+	padding: 12px 0;       /* ← これが「厚み」の正体 */
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+/* === 3列 下段　カテゴリ選択ボタン === */
+.category-btn.small {
 	width: 160px;
 	height: 60px;
 	font-size: 1.1em;
@@ -82,11 +110,15 @@ body {
 	border-radius: 10px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
+	
 }
 
 .category-btn:hover {
 	background-color: #388e3c;
 }
+
+
+
 
 /* === ユーザー登録画面のフォーム全体位置 === */
 .resister-form {
