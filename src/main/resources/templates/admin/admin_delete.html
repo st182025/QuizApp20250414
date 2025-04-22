@@ -1,10 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>クイズ削除確認</title>
+    <link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+    </style>
 </head>
-<body>
+<body class="admin">
+
+<div class="header-container">
+    <h1 class="header">クイズ削除確認</h1>
+    <div style="margin-left: auto;">
+        <a href="/admin/dashboard" class="home-link">ダッシュボードへ戻る</a>
+    </div>
+</div>
+
+<div class="admin-form-wrapper">
+    <form id="deleteForm" action="/admin/delete" method="post" class="admin-form" th:object="${quiz}">
+        <input type="hidden" th:field="*{id}" />
+
+        <p><strong>この問題をゴミ箱に移動しますか？</strong></p>
+        <p style="font-size: 0.9em; color: gray;">（後から復元できます）</p>
+        <br>
+
+        <label>カテゴリ：</label>
+        <p th:text="*{category.name}"></p>
+
+        <label>問題文：</label>
+        <p th:text="*{questionText}"></p>
+
+        <label>選択肢1：</label>
+        <p th:text="*{option_1}"></p>
+
+        <label>選択肢2：</label>
+        <p th:text="*{option_2}"></p>
+
+        <label>選択肢3：</label>
+        <p th:text="*{option_3}"></p>
+
+        <label>選択肢4：</label>
+        <p th:text="*{option_4}"></p>
+
+        <label>正解：</label>
+        <p th:switch="*{correctAnswer}">
+            <span th:case="'option_1'" th:text="*{option_1}"></span>
+            <span th:case="'option_2'" th:text="*{option_2}"></span>
+            <span th:case="'option_3'" th:text="*{option_3}"></span>
+            <span th:case="'option_4'" th:text="*{option_4}"></span>
+        </p>
+
+        <label>解説：</label>
+        <p th:text="*{explanation}">（なし）</p>
+
+        <div class="form-button-row">
+            <button type="button" class="btn-red" onclick="showConfirmModal()">はい、削除する</button>
+            <a href="/admin/dashboard" class="btn-white">いいえ、戻る</a>
+        </div>
+    </form>
+</div>
+
+<!-- 削除確認モーダル -->
+<div id="confirmModal" class="modal-overlay">
+    <div class="modal-box">
+        <p>このクイズをゴミ箱へ移動します。よろしいですか？</p>
+        <div style="margin-top: 20px;">
+            <button type="button" class="btn-red" onclick="submitForm()">はい</button>
+            <button type="button" class="btn-white" onclick="closeModal()">いいえ</button>
+        </div>
+    </div>
+</div>
+
+<!-- 成功モーダル（削除完了） -->
+<div id="successModal" class="modal-overlay" th:if="${moved}" style="display:flex;">
+    <div class="modal-box">
+        <p>ゴミ箱へ移動しました！</p>
+        <div style="margin-top: 20px;">
+            <a href="/admin/dashboard" class="btn-blue">ダッシュボードへ</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showConfirmModal() {
+        document.getElementById("confirmModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("confirmModal").style.display = "none";
+    }
+
+    function submitForm() {
+        document.getElementById("deleteForm").submit();
+    }
+</script>
 
 </body>
 </html>

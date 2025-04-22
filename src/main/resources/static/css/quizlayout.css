@@ -467,31 +467,34 @@ body {
 	border: 1px solid #ccc;
 	word-wrap: break-word;
 }
-
 .quiz-table th:nth-child(1),
 .quiz-table td:nth-child(1) {
-	width: 5%;
+	width: 3%;
 }
-
 .quiz-table th:nth-child(2),
 .quiz-table td:nth-child(2) {
-	width: 10%;
+	width: 3%;
 }
 
 .quiz-table th:nth-child(3),
 .quiz-table td:nth-child(3) {
-	width: 55%;
+	width: 9%;
 }
 
 .quiz-table th:nth-child(4),
 .quiz-table td:nth-child(4) {
-	width: 20%;
+	width: 55%;
 }
 
 .quiz-table th:nth-child(5),
-.quiz-table td:nth-child(5),
+.quiz-table td:nth-child(5) {
+	width: 20%;
+}
+
 .quiz-table th:nth-child(6),
-.quiz-table td:nth-child(6) {
+.quiz-table td:nth-child(6),
+.quiz-table th:nth-child(7),
+.quiz-table td:nth-child(7) {
 	width: 10%;
 }
 
@@ -508,6 +511,69 @@ body {
 /* === 正解セルだけ黒塗り === */
 .answer-cell {
 	background: #000;
+}
+/* === ゴミ箱用テーブル === */
+.trash-table {
+	width: 90%;
+	margin: auto;
+	border-collapse: collapse;
+	table-layout: fixed;
+	margin-bottom: 50px;
+	text-align: center;
+}
+
+.trash-table th,
+.trash-table td {
+	padding: 12px 8px;
+	border: 1px solid #ccc;
+	word-wrap: break-word;
+}
+
+/* 各列の幅指定：8列 */
+.trash-table th:nth-child(1),
+.trash-table td:nth-child(1) {
+	width: 4%; /* 行番号 */
+}
+
+.trash-table th:nth-child(2),
+.trash-table td:nth-child(2) {
+	width: 5%; /* ID */
+}
+
+.trash-table th:nth-child(3),
+.trash-table td:nth-child(3) {
+	width: 10%; /* カテゴリ */
+}
+
+.trash-table th:nth-child(4),
+.trash-table td:nth-child(4) {
+	width: 35%; /* 問題文 */
+}
+
+.trash-table th:nth-child(5),
+.trash-table td:nth-child(5) {
+	width: 15%; /* 正解 */
+}
+
+.trash-table th:nth-child(6),
+.trash-table td:nth-child(6) {
+	width: 15%; /* 削除日時 */
+}
+
+.trash-table th:nth-child(7),
+.trash-table td:nth-child(7),
+.trash-table th:nth-child(8),
+.trash-table td:nth-child(8) {
+	width: 8%; /* 復元/完全削除 */
+}
+
+.trash-table th {
+	background-color: #ffe0b2;
+	font-weight: bold;
+}
+
+.trash-table td {
+	background-color: #fff;
 }
 
 /* === モーダル全体オーバーレイ === */
