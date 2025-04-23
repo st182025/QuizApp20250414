@@ -6,14 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.quizapp.entity.AdminTrashEntity;
 import com.quizapp.entity.QuizEntity;
 import com.quizapp.repository.AdminTrashRepository;
 import com.quizapp.repository.QuizRepository;
 
+/**
+ * ゴミ箱（論理削除されたクイズ）管理用コントローラ
+ */
 @Controller
 public class AdminTrashController {
 
@@ -23,20 +27,26 @@ public class AdminTrashController {
     @Autowired
     private QuizRepository quizRepository;
 
-    // ========== 【ゴミ箱一覧ページ】 ==========
+    /**
+     * ゴミ箱一覧画面の表示
+     * @param model 表示用Model
+     * @return ゴミ箱一覧テンプレート
+     */
     @GetMapping("/admin/trash")
-    public String showTrashList(Model model, @RequestParam(name = "message", required = false) String message) {
+    public String showTrashList(Model model) {
         List<AdminTrashEntity> trashList = adminTrashRepository.findAll();
         model.addAttribute("trashList", trashList);
-        if (message != null && !message.isEmpty()) {
-            model.addAttribute("message", message);
-        }
         return "admin/admin_trash";
     }
 
-    // ========== 【復元処理】 ==========
-    @GetMapping("/admin/trash/restore/{id}")
-    public String restoreFromTrash(@PathVariable Long id) {
+    /**
+     * ゴミ箱からクイズを復元する（POST）
+     * @param id 復元対象のクイズID
+     * @param redirectAttributes Flash属性によるメッセージ表示用
+     * @return ゴミ箱一覧へリダイレクト
+     */
+    @PostMapping("/admin/trash/restore")
+    public String restoreFromTrash(@RequestParam Long id, RedirectAttributes redirectAttributes) {
         AdminTrashEntity trash = adminTrashRepository.findById(id).orElse(null);
         if (trash != null) {
             QuizEntity quiz = new QuizEntity();
@@ -51,18 +61,28 @@ public class AdminTrashController {
 
             quizRepository.save(quiz);              // 復元先テーブルに追加
             adminTrashRepository.deleteById(id);    // ゴミ箱から削除
-            return "redirect:/admin/trash?message=復元しました！";
+
+            redirectAttributes.addFlashAttribute("message", "復元しました！");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "復元に失敗しました。");
         }
-        return "redirect:/admin/trash?message=復元に失敗しました。";
+        return "redirect:/admin/trash";
     }
 
-    // ========== 【完全削除処理】 ==========
-    @GetMapping("/admin/trash/permanent-delete/{id}")
-    public String deletePermanently(@PathVariable Long id) {
+    /**
+     * ゴミ箱のクイズを完全削除する（POST）
+     * @param id 完全削除対象のクイズID
+     * @param redirectAttributes Flash属性によるメッセージ表示用
+     * @return ゴミ箱一覧へリダイレクト
+     */
+    @PostMapping("/admin/trash/permanent-delete")
+    public String deletePermanently(@RequestParam Long id, RedirectAttributes redirectAttributes) {
         if (adminTrashRepository.existsById(id)) {
             adminTrashRepository.deleteById(id);
-            return "redirect:/admin/trash?message=完全に削除しました。";
+            redirectAttributes.addFlashAttribute("message", "完全に削除しました！");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "削除に失敗しました。");
         }
-        return "redirect:/admin/trash?message=削除に失敗しました。";
+        return "redirect:/admin/trash";
     }
 }

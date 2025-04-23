@@ -1,136 +1,129 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>ゴミ箱（削除済みクイズ一覧）</title>
-	<link rel="stylesheet" th:href="@{/css/quizlayout.css}">
-	<style>
-		.modal-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100vw;
-			height: 100vh;
-			background: rgba(0, 0, 0, 0.5);
-			display: none;
-			justify-content: center;
-			align-items: center;
-			z-index: 1000;
-		}
-		.modal-box {
-			background: white;
-			padding: 30px 40px;
-			border-radius: 10px;
-			text-align: center;
-			box-shadow: 0 0 15px rgba(0,0,0,0.3);
-		}
-	</style>
+    <meta charset="UTF-8">
+    <title>ゴミ箱（削除済みクイズ一覧）</title>
+    <link rel="stylesheet" th:href="@{/css/quizlayout.css}">
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-box {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+    </style>
 </head>
 
 <body class="admin">
-	<div class="header-container">
-		<h1 class="header">削除済みクイズ一覧（ゴミ箱）</h1>
-		<div style="margin-left: auto;">
-			<a href="/admin/dashboard" class="home-link">ダッシュボードへ戻る</a>
-		</div>
-	</div>
 
-	<!-- 成功メッセージ（復元・削除） -->
-	<div th:if="${message}" style="text-align: center; margin: 20px 0;">
-		<p style="color: green; font-weight: bold;" th:text="${message}"></p>
-	</div>
+<div class="header-container">
+    <h1 class="header">削除済みクイズ一覧（ゴミ箱）</h1>
+    <div style="margin-left: auto;">
+        <a href="/admin/dashboard" class="home-link">ダッシュボードへ戻る</a>
+    </div>
+</div>
 
-	<!-- 削除済み一覧テーブル -->
-	<table border="1" class="trash-table">
-		<thead>
-			<tr>
-				<th>行</th>
-				<th>ID</th>
-				<th>カテゴリ</th>
-				<th>問題</th>
-				<th>正解</th>
-				<th>削除日時</th>
-				<th>復元</th>
-				<th>完全削除</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="trash, iterStat : ${trashList}">
-				<td th:text="${iterStat.index + 1}"></td>
-				<td th:text="${trash.id}"></td>
-				<td th:text="${trash.category.name}"></td>
-				<td th:text="${trash.questionText}"></td>
-				<td th:switch="${trash.correctAnswer}" style="background-color: black;">
-					<span th:case="'option_1'" th:text="${trash.option_1}"></span>
-					<span th:case="'option_2'" th:text="${trash.option_2}"></span>
-					<span th:case="'option_3'" th:text="${trash.option_3}"></span>
-					<span th:case="'option_4'" th:text="${trash.option_4}"></span>
-				</td>
-				<td th:text="${#temporals.format(trash.deletedAt, 'yyyy-MM-dd HH:mm')}"></td>
-				<td>
-					<button class="btn-green"
-					        th:onclick="'confirmAction(\'restore\', \'' + ${trash.id} + '\')'">
-					    復元
-					</button>
-				</td>
-				<td>
-					<button class="btn-red"
-					        th:onclick="'confirmAction(\'delete\', \'' + ${trash.id} + '\')'">
-					    完全削除
-					</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+<!-- 成功モーダル（第2モーダル） -->
+<div id="successModal" class="modal-overlay" th:if="${message}" style="display:flex;">
+    <div class="modal-box">
+        <p th:text="${message}"></p>
+        <div style="margin-top: 20px;">
+            <a href="/admin/trash" class="btn-blue">ゴミ箱へ</a>
+        </div>
+    </div>
+</div>
 
-	<!-- 確認モーダル -->
-	<div id="confirmModal" class="modal-overlay">
-		<div class="modal-box">
-			<p id="confirmMessage">このクイズを処理しますか？</p>
-			<div style="margin-top: 20px;">
-				<a id="confirmYes" class="btn-green" href="#">はい</a>
-				<button class="btn-white" onclick="closeModal()">いいえ</button>
-			</div>
-		</div>
-	</div>
+<!-- ゴミ箱一覧テーブル -->
+<table border="1" class="trash-table">
+    <thead>
+    <tr>
+        <th>行</th>
+        <th>ID</th>
+        <th>カテゴリ</th>
+        <th>問題</th>
+        <th>正解</th>
+        <th>削除日時</th>
+        <th>復元</th>
+        <th>完全削除</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="trash, iterStat : ${trashList}">
+        <td th:text="${iterStat.index + 1}"></td>
+        <td th:text="${trash.id}"></td>
+        <td th:text="${trash.category.name}"></td>
+        <td th:text="${trash.questionText}"></td>
+        <td th:switch="${trash.correctAnswer}" style="background-color: black;">
+            <span th:case="'option_1'" th:text="${trash.option_1}"></span>
+            <span th:case="'option_2'" th:text="${trash.option_2}"></span>
+            <span th:case="'option_3'" th:text="${trash.option_3}"></span>
+            <span th:case="'option_4'" th:text="${trash.option_4}"></span>
+        </td>
+        <td th:text="${#temporals.format(trash.deletedAt, 'yyyy-MM-dd HH:mm')}"></td>
+        <td>
+            <button class="btn-green" th:onclick="'showModal(\'restore\', ' + ${trash.id} + ')'">復元</button>
+        </td>
+        <td>
+            <button class="btn-red" th:onclick="'showModal(\'delete\', ' + ${trash.id} + ')'">完全削除</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-	<!-- 成功モーダル -->
-	<div id="successModal" class="modal-overlay" th:if="${message != null}" style="display:flex;">
-		<div class="modal-box">
-			<p th:text="${message}"></p>
-			<div style="margin-top: 20px;">
-				<a href="/admin/trash" class="btn-blue">一覧に戻る</a>
-			</div>
-		</div>
-	</div>
+<!-- 第1モーダル（確認） -->
+<div id="confirmModal" class="modal-overlay">
+    <div class="modal-box">
+        <p id="confirmText">この処理を実行しますか？</p>
+        <form id="confirmForm" method="post">
+            <input type="hidden" name="id" id="modalHiddenId">
+            <div style="margin-top: 20px;">
+                <button type="submit" class="btn-red" id="modalSubmitBtn">はい</button>
+                <button type="button" class="btn-white" onclick="closeModal()">いいえ</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-	<!-- モーダル制御スクリプト -->
-	<script th:inline="javascript">
-		function confirmAction(actionType, quizId) {
-			const modal = document.getElementById("confirmModal");
-			const message = document.getElementById("confirmMessage");
-			const yesBtn = document.getElementById("confirmYes");
+<script>
+    function showModal(action, id) {
+        const modal = document.getElementById("confirmModal");
+        const form = document.getElementById("confirmForm");
+        const text = document.getElementById("confirmText");
+        const input = document.getElementById("modalHiddenId");
+        const submitBtn = document.getElementById("modalSubmitBtn");
 
-			// 初期状態に戻す
-			yesBtn.className = "btn-green";
+        input.value = id;
 
-			if (actionType === 'restore') {
-				message.textContent = "このクイズを復元しますか？";
-				yesBtn.href = /*[[@{/admin/trash/restore/}]]*/ "/admin/trash/restore/" + quizId;
-				yesBtn.className = "btn-green";
-			} else {
-				message.textContent = "このクイズを完全に削除しますか？（元に戻せません）";
-				yesBtn.href = /*[[@{/admin/trash/permanent-delete/}]]*/ "/admin/trash/permanent-delete/" + quizId;
-				yesBtn.className = "btn-red";
-			}
+        if (action === 'restore') {
+            form.action = "/admin/trash/restore";
+            text.textContent = "ダッシュボードへ復元しますか？";
+            submitBtn.className = "btn-green";
+        } else if (action === 'delete') {
+            form.action = "/admin/trash/permanent-delete";
+            text.textContent = "このクイズを完全に削除しますか？（元に戻せません）";
+            submitBtn.className = "btn-red";
+        }
 
-			modal.style.display = "flex";
-		}
+        modal.style.display = "flex";
+    }
 
-		function closeModal() {
-			document.getElementById("confirmModal").style.display = "none";
-		}
-	</script>
+    function closeModal() {
+        document.getElementById("confirmModal").style.display = "none";
+    }
+</script>
 
 </body>
 </html>

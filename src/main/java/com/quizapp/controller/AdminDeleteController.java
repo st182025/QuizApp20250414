@@ -1,6 +1,3 @@
-/* =====================
-   AdminDeleteController（完全版）
-   ===================== */
 package com.quizapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.quizapp.entity.AdminTrashEntity;
 import com.quizapp.entity.QuizEntity;
 import com.quizapp.repository.AdminTrashRepository;
 import com.quizapp.repository.QuizRepository;
 
+/**
+ * 管理者用：クイズ削除（ゴミ箱移動）処理を行うコントローラ
+ */
 @Controller
 public class AdminDeleteController {
 
@@ -26,7 +25,13 @@ public class AdminDeleteController {
     @Autowired
     private AdminTrashRepository adminTrashRepository;
 
-    // === 削除確認画面 ===
+    /**
+     * クイズ削除（ゴミ箱移動）前の確認画面を表示
+     *
+     * @param id 削除対象のクイズID
+     * @param model モデル属性
+     * @return 削除確認画面
+     */
     @GetMapping("/admin/delete/{id}")
     public String showDeleteConfirm(@PathVariable Long id, Model model) {
         QuizEntity quiz = quizRepository.findById(id).orElse(null);
@@ -37,9 +42,15 @@ public class AdminDeleteController {
         return "admin/admin_delete";
     }
 
-    // === ゴミ箱へ移動（論理削除） ===
+    /**
+     * クイズを論理削除し、ゴミ箱テーブル（quiz_trash）に移動する
+     *
+     * @param id クイズID
+     * @param model モデル属性
+     * @return 成功モーダル付きの同一ページ再描画
+     */
     @PostMapping("/admin/delete")
-    public String moveToTrash(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+    public String moveToTrash(@RequestParam Long id, Model model) {
         QuizEntity quiz = quizRepository.findById(id).orElse(null);
         if (quiz != null) {
             AdminTrashEntity trash = new AdminTrashEntity();
@@ -51,16 +62,16 @@ public class AdminDeleteController {
             trash.setOption_4(quiz.getOption_4());
             trash.setCorrectAnswer(quiz.getCorrectAnswer());
             trash.setExplanation(quiz.getExplanation());
+
             adminTrashRepository.save(trash);
             quizRepository.deleteById(id);
-            redirectAttributes.addFlashAttribute("message", "ゴミ箱へ移動しました！");
+
+            // 削除成功後に元のクイズ情報を再設定（モーダルの表示用）
+            model.addAttribute("quiz", quiz);
+            model.addAttribute("moved", true); // モーダル表示用フラグ
+            return "admin/admin_delete";
         }
-        return "redirect:/admin/delete/complete";
+        return "redirect:/admin/dashboard";
     }
 
-    // === ゴミ箱移動完了後：モーダル表示 ===
-    @GetMapping("/admin/delete/complete")
-    public String showDeleteSuccess(Model model) {
-        return "admin/admin_delete"; // 同じテンプレートを使ってモーダル表示
-    }
-}
+ }

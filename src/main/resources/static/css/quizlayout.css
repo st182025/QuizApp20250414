@@ -512,6 +512,10 @@ body {
 .answer-cell {
 	background: #000;
 }
+
+body.mypage {
+	padding-bottom: 80px; /* 下に余白 */
+}
 /* === ゴミ箱用テーブル === */
 .trash-table {
 	width: 90%;
