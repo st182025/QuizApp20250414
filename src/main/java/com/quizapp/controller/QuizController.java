@@ -1,5 +1,6 @@
 package com.quizapp.controller;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -18,12 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.quizapp.entity.QuizEntity;
 import com.quizapp.entity.UserEntity;
+import com.quizapp.entity.UserScoreEntity;
 import com.quizapp.repository.UserRepository;
 import com.quizapp.service.QuizService;
+import com.quizapp.service.UserScoreService;
 
-/**
- * クイズ出題・回答・お気に入り追加などを担当するコントローラ
- */
 @Controller
 public class QuizController {
 
@@ -32,32 +32,19 @@ public class QuizController {
     @Autowired
     private UserRepository userRepository;
 
-    /**
-     * コンストラクタ：QuizServiceをDI
-     * @param quizService クイズ操作用サービス
-     */
+    @Autowired
+    private UserScoreService userScoreService;
+
     @Autowired
     public QuizController(QuizService quizService) {
         this.quizService = quizService;
     }
 
-    /**
-     * ホーム画面表示（カテゴリ・出題順選択）
-     * @return home.html
-     */
     @GetMapping("/home")
     public String showHomePage() {
         return "home";
     }
 
-    /**
-     * クイズの開始（カテゴリとモードに応じた問題取得と初期表示）
-     * @param category カテゴリ名 or all
-     * @param mode 出題順（normal or shuffle）
-     * @param model 表示用モデル
-     * @param session セッションにクイズ状態を保持
-     * @return quiz.html（第1問）
-     */
     @GetMapping("/quiz/start")
     public String startQuiz(
             @RequestParam String category,
@@ -92,17 +79,6 @@ public class QuizController {
         return "quiz";
     }
 
-    /**
-     * クイズの解答処理（正誤判定、結果画面表示）
-     * @param id クイズID
-     * @param selectedOption ユーザーが選択した選択肢（option_1など）
-     * @param category カテゴリ名
-     * @param index クイズのインデックス
-     * @param mode 出題モード
-     * @param model 結果表示用モデル
-     * @param session 正答数の更新用セッション
-     * @return answer.html（結果表示）
-     */
     @PostMapping("/quiz/answer")
     public String submitAnswer(
             @RequestParam Long id,
@@ -132,13 +108,6 @@ public class QuizController {
         return "answer";
     }
 
-    /**
-     * 「次の問題へ」押下時、次のクイズを表示
-     * @param index 現在のクイズのインデックス
-     * @param session クイズ一覧取得用セッション
-     * @param model 表示用モデル
-     * @return quiz.html or end.html
-     */
     @GetMapping("/quiz/next")
     public String nextQuestion(
             @RequestParam int index,
@@ -151,8 +120,22 @@ public class QuizController {
 
         if (questions == null || index >= questions.size()) {
             int correctCount = session.getAttribute("correctCount") != null ? (int) session.getAttribute("correctCount") : 0;
+            int totalCount = questions != null ? questions.size() : 0;
+
+            // ▼ スコア保存（ログインユーザーのみ）
+            UserEntity user = (UserEntity) session.getAttribute("user");
+            if (user != null) {
+                UserScoreEntity score = new UserScoreEntity();
+                score.setUser(user); // ← ManyToOneなのでUserEntityを渡す
+                score.setCorrectCount(correctCount);
+                score.setTotalCount(totalCount);
+                score.setPlayedAt(LocalDateTime.now());
+
+                userScoreService.saveScore(score);
+            }
+
             model.addAttribute("correctCount", correctCount);
-            model.addAttribute("totalCount", questions != null ? questions.size() : 0);
+            model.addAttribute("totalCount", totalCount);
             return "end";
         }
 
@@ -166,17 +149,6 @@ public class QuizController {
         return "quiz";
     }
 
-    /**
-     * お気に入り追加処理（ログイン必須）
-     * @param quizId 対象のクイズID
-     * @param index 現在の問題インデックス
-     * @param category カテゴリ名
-     * @param mode 出題順モード
-     * @param session ユーザー情報用セッション
-     * @param model 再描画用モデル
-     * @param redirectAttributes リダイレクト用メッセージ
-     * @return answer.html（再描画）
-     */
     @PostMapping("/quiz/favorite/add")
     public String addFavorite(
             @RequestParam Long quizId,
